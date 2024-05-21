@@ -1,13 +1,23 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import
+{
+  Component,
+  OnInit 
+} from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-@Component({
+@Component(
+{
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports:
+  [
+    RouterModule
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styles: ''
 })
-export class AppComponent {
-  title = 'nickp-doggy-gallery';
+export class AppComponent implements OnInit
+{
+  constructor() {}
+  ngOnInit(): void {}
 }

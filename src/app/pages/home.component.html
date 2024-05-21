@@ -1,0 +1,63 @@
+<section class="m-4 user-select-none">
+    <div class="container p-5">
+      <div class="row d-flex justify-content-center pb-3">
+        <div class="col-12 col-xl-6 pb-3">
+          <h1>[ Project ] - Doggy Gallery</h1>
+        </div>
+        <div class="col-12 col-xl-6">
+          <app-angular-logo />
+        </div>
+      </div>
+      <div class="col">
+        <ol class="lead">
+          <li><span class="lead">Click on an image to open it and use left <app-left-arrow /> and right arrow <app-right-arrow /> keys to navigate through the list.</span></li>
+          <li><span class="lead">Press the <span class="command">esc</span> key or click X at the top right corner to exit.</span></li>
+          <li><span class="lead">Click "Edit List" <span class="command">⌘E</span> to edit the list and then "Save List" <span class="command">⌘S</span> to save it or <span class="command">esc</span> to exit.</span></li>
+          <li><span class="lead">The <span class="command">⌘E</span> combination won't work while an image is open.</span></li>
+        </ol>
+      </div>
+      @if (images.length !== 0)
+      {
+        <span [ngClass]="{ 'text-primary text-underline': editModeOn, 'text-secondary': !editModeOn }"  class="mb-5 cursor-pointer font-monospace" (click)="editModeOn ? onSave() : onEdit()">{{ editModeOn ? 'Save list [Cmd+S]' : 'Edit list [Cmd+E]'}}</span>
+        @if (editModeOn)
+        {
+          <small class=" ms-3">(You can use <span class="command">⌘D</span> to delete images from the start of the list)</small>
+        }
+      }
+      <div class="row mt-4 mb-4 d-flex justify-content-center">
+        @for (image of images; track $index)
+        {
+          <div (click)="showImage(image.id)" [ngClass]="{'cursor-pointer': !editModeOn}" class="d-flex justify-content-end image-container col-12 col-md-6 col-xl-4 col-xxl-3" style="background-image: url({{image.source}});">
+            @if (editModeOn)
+            {
+              <app-remove-icon (delete)="onDeleteManual(image.id)" />
+            }
+          </div>
+        } @empty {
+          <p class="lead"><span class="text-danger h3">* </span>The list is empty<span class="text-danger h3"> *</span></p>
+          <div>
+            <button (click)="addImages()" class="btn btn-sm btn-primary">Refill the list [Cmd+G]</button>
+          </div>
+        }
+      </div>
+      <div class="row">
+        <div class="col pt-4 d-flex align-items-end"> 
+            <app-social-media />
+            <a class="alink ms-5" href="" target="_blank">[ source code ]</a>
+        </div>
+        <div class="col pt-4 d-flex justify-content-end align-items-end">
+          <span class="small-text">[ Images source: Instagram ]</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  @if (selectedImage)
+  {
+    <app-image-modal
+    imageSrc="{{ selectedImage!.source }}"
+    sourceAlt="{{ selectedImage!.alt }}"
+    [imageNumber]="selectedImage!.id"
+    (close)="closeImage()"
+    />
+  }
+  <div [ngClass]="{'show': toast}" class="snackbar">You can't enable the edit mode right now!</div>
