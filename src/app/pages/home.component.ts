@@ -5,7 +5,6 @@ import
     OnInit
 } from "@angular/core";
 import { NgClass } from "@angular/common";
-import { RouterOutlet } from "@angular/router";
 
 import { AngularLogoComponent } from "../reusable-components/angular-logo.component";
 import { ImageModalComponent } from "../reusable-components/image-modal.component";
@@ -28,7 +27,6 @@ interface Image
         standalone: true,
         imports:
         [
-            RouterOutlet,
             NgClass,
             AngularLogoComponent,
             ImageModalComponent,
@@ -92,18 +90,13 @@ export class HomeComponent implements OnInit
     onDeleteManual( id: number ): void
     {  
       const index = this.images.findIndex(image => image.id === id);
-      if (index !== -1) 
+      if (index !== -1)
         this.images.splice(index, 1);
-      if (this.images.length === 0){
-        this.editModeOn = false;
-      }
     }
   
     onDeleteFirst(): void {
       if (!this.editModeOn)
         return;
-      if (this.images.length === 1)
-        this.editModeOn = false;
       this.images.shift();
     }
   
@@ -153,6 +146,11 @@ export class HomeComponent implements OnInit
     {
       this.previousImage();
     }
+
+    //* the onKeyDown method can have the event.preventDefault();
+    //* to avoid duplicating it in every other method below
+    //* but this will affect the whole keyboard while I only
+    //* need cmd + S, E, D, G combinations.
   
     @HostListener('document:keydown', ['$event'])
     onKeydown( event: KeyboardEvent ): void

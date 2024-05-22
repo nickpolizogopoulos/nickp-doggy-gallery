@@ -11,8 +11,8 @@
       <section class="col">
         <ol class="lead">
           <li><span class="lead">Click on an image to open it and use left <app-left-arrow /> and right arrow <app-right-arrow /> keys to navigate through the list.</span></li>
-          <li><span class="lead">Press the <span class="command">esc</span> key or click X at the top right corner to exit.</span></li>
-          <li><span class="lead">Click "Edit List" <span class="command">⌘E</span> to edit the list and then "Save List" <span class="command">⌘S</span> to save it or <span class="command">esc</span> to exit.</span></li>
+          <li><span class="lead">Press the <span class="command">esc</span> key or click <span class="command ">X</span> at the top right corner to exit.</span></li>
+          <li><span class="lead">Click "Edit List" or <span class="command">⌘E</span> to edit the list and then "Save List" or <span class="command">⌘S</span> to save it or <span class="command">esc</span> to exit.</span></li>
           <li><span class="lead">The <span class="command">⌘E</span> combination won't work while an image is open.</span></li>
         </ol>
         @if (images.length !== 0)
@@ -36,7 +36,7 @@
         } @empty {
           <p class="lead"><span class="text-danger h3">* </span>The list is empty<span class="text-danger h3"> *</span></p>
           <div>
-            <button (click)="addImages()" class="btn btn-sm btn-primary">Refill the list [Cmd+G]</button>
+            <button (click)="addImages()" class="btn btn-sm btn-primary">Refill the list <span class="command text-black">⌘G</span></button>
           </div>
         }
       </section>
