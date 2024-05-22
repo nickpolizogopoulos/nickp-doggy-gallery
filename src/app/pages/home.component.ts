@@ -12,6 +12,7 @@ import { RemoveIconComponent } from "../reusable-components/remove-icon.componen
 import { LeftArrowComponent } from "../reusable-components/left-arrow.component";
 import { RightArrowComponent } from "../reusable-components/right-arrow.component";
 import { SocialMediaComponent } from "../reusable-components/social-media.component";
+import { FirebaseLogoComponent } from "../reusable-components/firebase-logo.component";
 
 interface Image
 {
@@ -33,7 +34,8 @@ interface Image
             RemoveIconComponent,
             LeftArrowComponent,
             RightArrowComponent,
-            SocialMediaComponent
+            SocialMediaComponent,
+            FirebaseLogoComponent
         ],
     }
 )

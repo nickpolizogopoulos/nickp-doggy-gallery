@@ -58,7 +58,8 @@ import { Component } from '@angular/core';
   
     .angular-logo
     {
-      max-width: 13rem;
+      margin-right: 25px;
+      max-width: 12rem;
     }
   
   `
