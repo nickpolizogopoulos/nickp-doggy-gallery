@@ -61,10 +61,8 @@
   @if (selectedImage)
   {
     <app-image-modal
-    imageSrc="{{ selectedImage!.source }}"
-    sourceAlt="{{ selectedImage!.alt }}"
-    [imageNumber]="selectedImage!.id"
-    (close)="closeImage()"
+      [selectedImage]="selectedImage"
+      (close)="closeImage()"
     />
   }
   <div [ngClass]="{'show': toast}" class="snackbar">You can't enable the edit mode right now!</div>

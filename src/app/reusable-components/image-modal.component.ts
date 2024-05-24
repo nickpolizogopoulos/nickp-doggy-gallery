@@ -6,6 +6,8 @@ import
     Output
 } from '@angular/core';
 
+import { Image } from '../pages/home.component';
+
 @Component(
 {
   selector: 'app-image-modal',
@@ -15,8 +17,8 @@ import
   
     <div class="backdrop" (click)="onClose()">
         <div class="image-box user-select-none" (click)="$event.stopPropagation()">
-            <img [src]="imageSrc" [alt]="sourceAlt">
-            <p class="image-text"><i>#{{ imageNumber }} - {{ sourceAlt }}</i></p>
+            <img [src]="image.source" [alt]="image.alt">
+            <p class="image-text"><i>#{{ image.id }} - {{ image.alt }}</i></p>
         </div>
         <div (click)="onClose()" class="close cursor-pointer user-select-none">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
@@ -116,15 +118,12 @@ import
 })
 export class ImageModalComponent
 {
+    @Input('selectedImage') image!:Image;
+    @Output() close = new EventEmitter<void>();
 
-  @Input() imageSrc?: string;
-  @Input() sourceAlt?: string;
-  @Input() imageNumber?: number;
-  @Output() close = new EventEmitter<void>();
-
-  onClose(): void
-  {
-    this.close.emit();
-  }
+    onClose(): void
+    {
+        this.close.emit();
+    }
 
 }

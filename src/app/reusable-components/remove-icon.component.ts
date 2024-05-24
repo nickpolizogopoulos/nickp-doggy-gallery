@@ -38,7 +38,8 @@ import
     
     `
 })
-export class RemoveIconComponent {
+export class RemoveIconComponent
+{
 
     @Output() delete = new EventEmitter<void>();
 
@@ -46,4 +47,5 @@ export class RemoveIconComponent {
     {
         this.delete.emit();
     }
+
 }

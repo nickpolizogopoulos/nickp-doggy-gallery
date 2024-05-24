@@ -1,8 +1,4 @@
-import
-{
-  Component,
-  OnInit 
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component(
@@ -13,11 +9,10 @@ import { RouterModule } from '@angular/router';
   [
     RouterModule
   ],
-  templateUrl: './app.component.html',
-  styles: ''
+  template: `
+  
+    <router-outlet />
+
+  `
 })
-export class AppComponent implements OnInit
-{
-  constructor() {}
-  ngOnInit(): void {}
-}
+export class AppComponent {}
