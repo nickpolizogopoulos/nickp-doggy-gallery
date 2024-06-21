@@ -157,16 +157,16 @@ export class HomeComponent implements OnInit
   @HostListener('document:keydown', ['$event'])
   onKeydown( event: KeyboardEvent ): void
   {
-    if ((event.key || event.ctrlKey) && event.key === 's')
+    if ((event.metaKey || event.ctrlKey) && event.key === 's')
       this.onCmdS(event);
 
-    if ((event.key || event.ctrlKey) && event.key === 'e')
+    if ((event.metaKey || event.ctrlKey) && event.key === 'e')
       this.onCmdE(event);
 
-    if ((event.key || event.ctrlKey) && event.key === 'd')
+    if ((event.metaKey || event.ctrlKey) && event.key === 'd')
       this.onCmdD(event);
 
-    if ((event.key || event.ctrlKey) && event.key === 'g')
+    if ((event.metaKey || event.ctrlKey) && event.key === 'g')
       this.onCmdG(event);
   }
 
