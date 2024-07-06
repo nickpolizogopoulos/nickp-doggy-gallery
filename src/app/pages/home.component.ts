@@ -36,7 +36,7 @@ export interface Image
     RightArrowComponent,
     SocialMediaComponent,
     FirebaseLogoComponent
-  ],
+  ]
 })
 export class HomeComponent implements OnInit
 {
