@@ -2,29 +2,35 @@ import
 {
     Component,
     EventEmitter,
+    input,
     Input,
-    Output
+    output,
+    Output,
+    ViewEncapsulation
 } from '@angular/core';
 
-import { Image } from '../pages/home.component';
+import { type Image } from '../utilities/image'
 
 @Component(
 {
   selector: 'app-image-modal',
   standalone: true,
   imports: [],
+  encapsulation: ViewEncapsulation.None,
+  host : {
+    class: 'backdrop',
+    '(click)': 'onClose()'
+  },
   template: `
   
-    <div class="backdrop" (click)="onClose()">
-        <div class="image-box user-select-none" (click)="$event.stopPropagation()">
-            <img [src]="image.source" [alt]="image.alt">
-            <p class="image-text"><i>#{{ image.id }} - {{ image.alt }}</i></p>
-        </div>
-        <div (click)="onClose()" class="close cursor-pointer user-select-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-            </svg>
-        </div>
+    <div class="image-box user-select-none" (click)="$event.stopPropagation()">
+        <img [src]="selectedImage().source" [alt]="selectedImage().alt">
+        <p class="image-text"><i>#{{ selectedImage().id }} - {{ selectedImage().alt }}</i></p>
+    </div>
+    <div (click)="onClose()" class="close cursor-pointer user-select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+        </svg>
     </div>
   `,
   styles: [`
@@ -54,6 +60,21 @@ import { Image } from '../pages/home.component';
         z-index: 101;
         text-align: center;
         cursor: default;
+
+        @media screen and (max-width: 1300px)
+        {
+            width: 50%;
+        }
+
+        @media screen and (max-width: 1000px)
+        {
+            width: 75%;
+        }
+
+        @media screen and (max-width: 500px)
+        {
+            width: 90%;
+        }
     }
 
     img
@@ -74,52 +95,28 @@ import { Image } from '../pages/home.component';
         top: 30px;
         right: 30px;
         color: #D2D2D2;
-        transition: transform 0.1s ease;
+        transition: transform 0.1s ease-in-out;
         border: 1px solid grey;
         border-radius: 4px;
         z-index: 102;
-    }
-
-    .close:hover
-    {
-        color: white;
-        transform: scale(1.1);
-    }
-    
-    .close:focus
-    {
-        transform: scale(-1.3);
-    }
-
-    @media screen and (max-width: 1300px)
-    {
-        .image-box
+        &:hover
         {
-            width: 50%;
+            color: white;
+            transform: scale(1.1);
+        }
+        &:active
+        {
+            transform: scale(-1.3);
         }
     }
 
-    @media screen and (max-width: 1000px)
-    {
-        .image-box
-        {
-            width: 75%;
-        }
-    }
-
-    @media screen and (max-width: 500px)
-    {
-        .image-box
-        {
-            width: 90%;
-        }
-    }
   `]
 })
 export class ImageModalComponent
 {
-    @Input('selectedImage') image!:Image;
-    @Output() close = new EventEmitter<void>();
+    
+    selectedImage = input.required<Image>();
+    close = output<void>();
 
     onClose(): void
     {

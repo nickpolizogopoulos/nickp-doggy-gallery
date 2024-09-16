@@ -28,16 +28,19 @@ import { Component } from "@angular/core";
     
         .firebase-logo
         {   
-            max-width: 13rem;
-        }
-        
-        @media screen and (max-width: 568px)
-        {
-            .firebase-logo
+            width: 13rem;
+            
+            @media screen and (max-width: 600px)
             {
-                margin-top: 20px;
+                max-width: 10rem;
+            }
+            @media screen and (max-width: 477px)
+            {
+                max-width: 8rem;
             }
         }
+        
+        
     
     `
 })

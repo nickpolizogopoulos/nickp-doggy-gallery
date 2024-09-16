@@ -2,24 +2,18 @@ import
 {
     Component,
     HostListener,
-    OnInit
+    OnInit,
+    signal
 } from "@angular/core";
-import { NgClass } from "@angular/common";
 
-import { AngularLogoComponent } from "../reusable-components/angular-logo.component";
 import { ImageModalComponent } from "../reusable-components/image-modal.component";
 import { RemoveIconComponent } from "../reusable-components/remove-icon.component";
 import { LeftArrowComponent } from "../reusable-components/left-arrow.component";
 import { RightArrowComponent } from "../reusable-components/right-arrow.component";
-import { SocialMediaComponent } from "../reusable-components/social-media.component";
-import { FirebaseLogoComponent } from "../reusable-components/firebase-logo.component";
-
-export interface Image
-{
-  id: number;
-  source: string;
-  alt: string;
-};
+import { CommandComponent } from "../reusable-components/command.component";
+import { type Image } from '../utilities/image'
+import { HeaderComponent } from "../common/header.component";
+import { FooterComponent } from "../common/footer.component";
 
 @Component(
 {
@@ -28,14 +22,13 @@ export interface Image
   standalone: true,
   imports:
   [
-    NgClass,
-    AngularLogoComponent,
+    HeaderComponent,
     ImageModalComponent,
     RemoveIconComponent,
+    CommandComponent,
     LeftArrowComponent,
     RightArrowComponent,
-    SocialMediaComponent,
-    FirebaseLogoComponent
+    FooterComponent
   ]
 })
 export class HomeComponent implements OnInit
@@ -46,22 +39,21 @@ export class HomeComponent implements OnInit
       this.addImages();
   }
   
-  selectedImage: Image | null = null;
-  dogImagesLocation: string = '././assets/images/dogs/';
-  imageFileType: string = '.jpg'
-  numberOfImages: number = 12;
-  images: Image[] = [];
-  editModeOn: boolean = false;
-  toast: boolean = false;
-  
+  private dogImagesLocation = signal<string>('././assets/images/dogs/');
+  private numberOfImages = signal<number>(12);
+  selectedImage = signal<Image | null>(null);
+  images = signal<Image[]> ([]);
+  editModeOn = signal<boolean>(false);
+  toast = signal<boolean>(false);
+
   addImages(): void
   {
-    this.editModeOn = false;
-    for (let i = 1; i <= this.numberOfImages; i++ )
-      this.images.push(
+    this.editModeOn.set(false);
+    for (let i = 1; i <= this.numberOfImages(); i++ )
+      this.images().push(
         {
           id: i,
-          source: this.dogImagesLocation + i.toString() + this.imageFileType,
+          source: this.dogImagesLocation() + i.toString() + '.jpg',
           alt: 'Good boy no.' + i.toString()
         }
       );
@@ -69,72 +61,72 @@ export class HomeComponent implements OnInit
 
   onEdit(): void
   {
-    this.editModeOn = true;
+    this.editModeOn.set(true);
   }
 
   onSave(): void
   {
-    this.editModeOn = false;
+    this.editModeOn.set(false);
   }
   
   showImage( id: number ): void
   {
-    if (!this.editModeOn)
-      for (let image of this.images)
+    if (!this.editModeOn())
+      for (let image of this.images())
         if (id === image.id)
           {
-            this.selectedImage = image;
+            this.selectedImage.set(image);
             return;
           }
   }
       
   onDeleteManual( id: number ): void
   {  
-    const index = this.images.findIndex(image => image.id === id);
+    const index = this.images().findIndex(image => image.id === id);
     if (index !== -1)
-      this.images.splice(index, 1);
+      this.images().splice(index, 1);
   }
 
   onDeleteFirst(): void
   {
-    if (!this.editModeOn)
+    if (!this.editModeOn())
       return;
-    this.images.shift();
+    this.images().shift();
   }
 
   closeImage(): void
   {
-    this.selectedImage = null;
+    this.selectedImage.set(null);
   }
 
   nextImage(): void
   {
-    if (!this.selectedImage)
+    if (!this.selectedImage())
       return;
-    const index = this.images.findIndex(image => image.id === this.selectedImage!.id);
-    if (index === this.images.length - 1) //* for infinite next
-      this.selectedImage = this.images[index - (this.images.length - 1)]; //* for infinite next
-    if (index < this.images.length - 1)
-      this.selectedImage = this.images[index + 1];
+    const index = this.images().findIndex(image => image.id === this.selectedImage()!.id);
+    if (index === this.images().length - 1) //* for infinite next
+    this.selectedImage.set(this.images()[index - (this.images().length - 1)]); //* for infinite next
+    if (index < this.images().length - 1)
+      this.selectedImage.set(this.images()[index + 1]);
   }
 
   previousImage(): void
   {
-    if (!this.selectedImage)
+    if (!this.selectedImage())
       return;
-    const index = this.images.findIndex(image => image.id === this.selectedImage!.id);
+    const index = this.images().findIndex(image => image.id === this.selectedImage()!.id);
     if (index === 0) //* for infinite previous
-      this.selectedImage = this.images[index + (this.images.length - 1)]; //* for infinite previous
+      this.selectedImage.set(this.images()[index + (this.images().length - 1)]); //* for infinite previous
     if (index > 0)
-      this.selectedImage = this.images[index - 1];
+      this.selectedImage.set(this.images()[index - 1]);
   }
   
   @HostListener('document:keydown.escape', ['$event']) 
   onEscKeyPress(): void
   {
     this.closeImage();
-    this.editModeOn = false;
-    this.toast = false;
+    this.editModeOn.set(false);
+    this.toast.set(false);
   }
   
   @HostListener('document:keydown.ArrowRight', ['$event'])
@@ -181,10 +173,10 @@ export class HomeComponent implements OnInit
   onCmdE( event: KeyboardEvent ): void
   {
     event.preventDefault();
-    if (this.selectedImage)
+    if (this.selectedImage())
     {
-      this.toast = true;
-      setTimeout( () => this.toast = false, 2200);
+      this.toast.set(true);
+      setTimeout( () => this.toast.set(false), 2200);
       return;
     }
     this.onEdit();
@@ -193,7 +185,7 @@ export class HomeComponent implements OnInit
   onCmdD( event: KeyboardEvent ): void
   {
     event.preventDefault();
-    if (this.selectedImage)
+    if (this.selectedImage())
       return;
     this.onDeleteFirst();
   }
