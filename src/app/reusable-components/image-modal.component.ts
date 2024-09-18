@@ -18,9 +18,9 @@ import { type Image } from '../utilities/image'
         class: 'backdrop',
         '(click)': 'onClose()'
     },
+    //* (click)="$event.stopPropagation()" // modal won't dismount on image click
     template: `
     
-        //* (click)="$event.stopPropagation()" // modal won't dismount on image click
         <div class="image-box user-select-none" (click)="$event.stopPropagation()">
             <img [src]="selectedImage().source" [alt]="selectedImage().alt">
             <p class="image-text"><i>#{{ selectedImage().id }} - {{ selectedImage().alt }}</i></p>
