@@ -1,9 +1,14 @@
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 body
 {
     background-color: rgb(255, 252, 243);
     color: rgb(71, 71, 71);
+}
+
+ul
+{
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 h1

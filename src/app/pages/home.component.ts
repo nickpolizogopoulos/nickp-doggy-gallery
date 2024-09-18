@@ -41,6 +41,7 @@ export class HomeComponent implements OnInit
   
   private dogImagesLocation = signal<string>('././assets/images/dogs/');
   private numberOfImages = signal<number>(12);
+  
   selectedImage = signal<Image | null>(null);
   images = signal<Image[]> ([]);
   editModeOn = signal<boolean>(false);
@@ -103,9 +104,12 @@ export class HomeComponent implements OnInit
   {
     if (!this.selectedImage())
       return;
+
     const index = this.images().findIndex(image => image.id === this.selectedImage()!.id);
+
     if (index === this.images().length - 1) //* for infinite next
-    this.selectedImage.set(this.images()[index - (this.images().length - 1)]); //* for infinite next
+      this.selectedImage.set(this.images()[index - (this.images().length - 1)]); //* for infinite next
+      
     if (index < this.images().length - 1)
       this.selectedImage.set(this.images()[index + 1]);
   }
@@ -114,9 +118,12 @@ export class HomeComponent implements OnInit
   {
     if (!this.selectedImage())
       return;
+
     const index = this.images().findIndex(image => image.id === this.selectedImage()!.id);
+    
     if (index === 0) //* for infinite previous
       this.selectedImage.set(this.images()[index + (this.images().length - 1)]); //* for infinite previous
+
     if (index > 0)
       this.selectedImage.set(this.images()[index - 1]);
   }
